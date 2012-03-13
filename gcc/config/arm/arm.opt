@@ -237,6 +237,10 @@ intended for ordinary use in compiling code.
 EnumValue
 Enum(processor_type) String(native) Value(-1) DriverOnly
 
+mreturn-aggregates-in-memory
+Target Report Mask(RETURN_AGGREGATES_IN_MEMORY)
+Return aggregates in memory
+
 mvectorize-with-neon-quad
 Target Report RejectNegative InverseMask(NEON_VECTORIZE_DOUBLE)
 Use Neon quad-word (rather than double-word) registers for vectorization.
