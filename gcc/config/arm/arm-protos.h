@@ -43,6 +43,9 @@ extern HOST_WIDE_INT thumb_compute_initial_elimination_offset (unsigned int,
 extern unsigned int arm_dbx_register_number (unsigned int);
 extern void arm_output_fn_unwind (FILE *, bool);
 
+extern int arm_major_arch (void);
+extern bool arm_thumb_arch_p (void);
+
 extern rtx arm_expand_builtin (tree exp, rtx target, rtx subtarget
 			       ATTRIBUTE_UNUSED, enum machine_mode mode
 			       ATTRIBUTE_UNUSED, int ignore ATTRIBUTE_UNUSED);
