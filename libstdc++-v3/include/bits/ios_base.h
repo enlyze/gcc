@@ -40,7 +40,7 @@
 #include <bits/localefwd.h>
 #include <bits/locale_classes.h>
 
-#if __cplusplus < 201103L
+#if __cplusplus < 201103L || defined(UNDER_CE)
 # include <stdexcept>
 #else
 # include <system_error>
@@ -202,6 +202,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   /// I/O error code
   enum class io_errc { stream = 1 };
 
+#ifndef UNDER_CE
   template <> struct is_error_code_enum<io_errc> : public true_type { };
 
   const error_category& iostream_category() noexcept;
@@ -213,6 +214,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   inline error_condition
   make_error_condition(io_errc e) noexcept
   { return error_condition(static_cast<int>(e), iostream_category()); }
+#endif
 #endif
 
   // 27.4.2  Class ios_base

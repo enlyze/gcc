@@ -33,7 +33,9 @@
 #include <cassert>
 #endif
 #include <cctype>
+#ifndef UNDER_CE
 #include <cerrno>
+#endif
 #include <cfloat>
 #include <ciso646>
 #include <climits>
@@ -109,7 +111,9 @@
 #include <ratio>
 #include <regex>
 #include <scoped_allocator>
+#ifndef UNDER_CE
 #include <system_error>
+#endif
 #include <thread>
 #include <tuple>
 #include <typeindex>

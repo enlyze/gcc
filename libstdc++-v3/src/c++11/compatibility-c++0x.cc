@@ -29,7 +29,9 @@
 #define generic_category generic_categoryxx
 #define _V2 _V2xx
 #include <string>
+#ifndef UNDER_CE
 #include <system_error>
+#endif
 #include <cstring>
 #undef error_category
 #undef system_category

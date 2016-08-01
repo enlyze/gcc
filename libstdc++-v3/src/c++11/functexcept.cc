@@ -30,7 +30,9 @@
 #include <new>
 #include <typeinfo>
 #include <ios>
+#ifndef UNDER_CE
 #include <system_error>
+#endif
 #include <future>
 #include <functional>
 #include <bits/regex_error.h>
@@ -125,10 +127,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   __throw_ios_failure(const char* __s __attribute__((unused)))
   { _GLIBCXX_THROW_OR_ABORT(ios_base::failure(_(__s))); }
 
+#ifndef UNDER_CE
   void
   __throw_system_error(int __i __attribute__((unused)))
   { _GLIBCXX_THROW_OR_ABORT(system_error(error_code(__i,
 						    generic_category()))); }
+#endif
 
   void
   __throw_future_error(int __i __attribute__((unused)))

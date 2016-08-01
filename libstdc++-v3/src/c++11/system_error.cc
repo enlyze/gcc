@@ -23,6 +23,7 @@
 // <http://www.gnu.org/licenses/>.
 
 
+#ifndef UNDER_CE
 #define _GLIBCXX_USE_CXX11_ABI 1
 #define __sso_string __sso_stringxxx
 #include <cstring>
@@ -47,7 +48,11 @@ namespace
     {
       // XXX locale issues: how does one get or set loc.
       // _GLIBCXX_HAVE_STRERROR_L, strerror_l(i, cloc)
+#ifdef UNDER_CE
+      return string("unknown system error");
+#else
       return string(strerror(i));
+#endif
     }
   };
 
@@ -63,7 +68,11 @@ namespace
     {
       // XXX locale issues: how does one get or set loc.
       // _GLIBCXX_HAVE_STRERROR_L, strerror_l(i, cloc)
+#ifdef UNDER_CE
+      return string("unknown system error");
+#else
       return string(strerror(i));
+#endif
     }
   };
 
@@ -182,3 +191,4 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace
+#endif

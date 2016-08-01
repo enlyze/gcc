@@ -46,7 +46,9 @@ _txnal_runtime_error_get_msg(void* e);
 #define _GLIBCXX_DEFINE_STDEXCEPT_COPY_OPS 1
 #define __cow_string __cow_stringxxx
 #include <stdexcept>
+#ifndef UNDER_CE
 #include <system_error>
+#endif
 #undef __cow_string
 
 namespace std _GLIBCXX_VISIBILITY(default)
@@ -156,6 +158,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
                 "alignof(std::string) has changed");
 #endif
 
+#ifndef UNDER_CE
   // Return error_category::message() as an SSO string
   __sso_string
   error_category::_M_message(int i) const
@@ -163,6 +166,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     string msg = this->message(i);
     return {msg.c_str(), msg.length()};
   }
+#endif
 
 _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace
