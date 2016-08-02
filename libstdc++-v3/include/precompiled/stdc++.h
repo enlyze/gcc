@@ -102,19 +102,25 @@
 #include <atomic>
 #include <chrono>
 #include <codecvt>
+#ifndef UNDER_CE
 #include <condition_variable>
+#endif
 #include <forward_list>
+#ifndef UNDER_CE
 #include <future>
+#endif
 #include <initializer_list>
+#ifndef UNDER_CE
 #include <mutex>
+#endif
 #include <random>
 #include <ratio>
 #include <regex>
 #include <scoped_allocator>
 #ifndef UNDER_CE
 #include <system_error>
-#endif
 #include <thread>
+#endif
 #include <tuple>
 #include <typeindex>
 #include <type_traits>
@@ -123,5 +129,7 @@
 #endif
 
 #if __cplusplus >= 201402L
+#ifndef UNDER_CE
 #include <shared_mutex>
+#endif
 #endif

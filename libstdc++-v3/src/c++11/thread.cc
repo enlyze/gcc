@@ -23,6 +23,7 @@
 // <http://www.gnu.org/licenses/>.
 
 
+#ifndef UNDER_CE
 #define _GLIBCXX_THREAD_ABI_COMPAT 1
 #include <thread>
 #include <system_error>
@@ -250,3 +251,4 @@ _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace std
 
 #endif // _GLIBCXX_HAS_GTHREADS && _GLIBCXX_USE_C99_STDINT_TR1
+#endif

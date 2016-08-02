@@ -22,6 +22,7 @@
 // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 // <http://www.gnu.org/licenses/>.
 
+#ifndef UNDER_CE
 #include <bits/c++config.h>
 #if defined(_GLIBCXX_SHARED)
 #define _GLIBCXX_ASYNC_ABI_COMPAT
@@ -124,3 +125,4 @@ _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace std
 #endif // _GLIBCXX_SHARED
 #endif // _GLIBCXX_HAS_GTHREADS && _GLIBCXX_USE_C99_STDINT_TR1
+#endif
