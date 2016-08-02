@@ -22,6 +22,7 @@
 // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 // <http://www.gnu.org/licenses/>.
 
+#ifndef UNDER_CE
 #include <bits/c++config.h>
 #include <chrono>
 
@@ -103,3 +104,4 @@ namespace std _GLIBCXX_VISIBILITY(default)
 } // namespace std
 
 #endif // _GLIBCXX_USE_C99_STDINT_TR1
+#endif
