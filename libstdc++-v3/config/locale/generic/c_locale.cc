@@ -46,6 +46,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
+#ifndef UNDER_CE
   namespace
   {
     struct _Save_errno
@@ -55,6 +56,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       int _M_errno;
     };
   }
+#endif
 
   template<>
     void
@@ -62,11 +64,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		   const __c_locale&) throw()
     {
       // Assumes __s formatted for "C" locale.
+#ifndef UNDER_CE
       char* __old = setlocale(LC_ALL, 0);
       const size_t __len = strlen(__old) + 1;
       char* __sav = new char[__len];
       memcpy(__sav, __old, __len);
       setlocale(LC_ALL, "C");
+#endif
       char* __sanity;
       bool __overflow = false;
 
@@ -117,8 +121,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  __err = ios_base::failbit;
 	}
 
+#ifndef UNDER_CE
       setlocale(LC_ALL, __sav);
       delete [] __sav;
+#endif
     }
 
   template<>
@@ -127,11 +133,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		   const __c_locale&) throw()
     {
       // Assumes __s formatted for "C" locale.
+#ifndef UNDER_CE
       char* __old = setlocale(LC_ALL, 0);
       const size_t __len = strlen(__old) + 1;
       char* __sav = new char[__len];
       memcpy(__sav, __old, __len);
       setlocale(LC_ALL, "C");
+#endif
       char* __sanity;
 
 #if !__DBL_HAS_INFINITY__
@@ -162,8 +170,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  __err = ios_base::failbit;
 	}
 
+#ifndef UNDER_CE
       setlocale(LC_ALL, __sav);
       delete [] __sav;
+#endif
     }
 
   template<>
@@ -172,11 +182,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		   ios_base::iostate& __err, const __c_locale&) throw()
     {
       // Assumes __s formatted for "C" locale.
+#ifndef UNDER_CE
       char* __old = setlocale(LC_ALL, 0);
       const size_t __len = strlen(__old) + 1;
       char* __sav = new char[__len];
       memcpy(__sav, __old, __len);
       setlocale(LC_ALL, "C");
+#endif
 
 #if !__LDBL_HAS_INFINITY__
       const _Save_errno __save_errno;
@@ -214,8 +226,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  __err = ios_base::failbit;
 	}
 
+#ifndef UNDER_CE
       setlocale(LC_ALL, __sav);
       delete [] __sav;
+#endif
     }
 
   void
