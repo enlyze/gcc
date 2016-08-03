@@ -102,7 +102,9 @@
 #if __cplusplus >= 201103L
 #include <array>
 #include <atomic>
+#ifndef UNDER_CE
 #include <chrono>
+#endif
 #include <codecvt>
 #ifndef UNDER_CE
 #include <condition_variable>
