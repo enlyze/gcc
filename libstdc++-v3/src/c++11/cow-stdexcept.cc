@@ -188,6 +188,12 @@ _GLIBCXX_END_NAMESPACE_VERSION
 // are not defined by us.  Without such support, the exceptions will not be
 // declared transaction-safe, so we just don't provide transactional clones
 // in this case.
+#ifdef UNDER_CE
+// TODO: don't define _GLIBCXX_USE_WEAK_REF in the first place!
+#undef _GLIBCXX_USE_WEAK_REF
+#define _GLIBCXX_USE_WEAK_REF 0
+#endif
+
 #if _GLIBCXX_USE_WEAK_REF
 
 extern "C" {
