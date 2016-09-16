@@ -250,6 +250,9 @@ static void arm_output_dwarf_dtprel (FILE *, int, rtx) ATTRIBUTE_UNUSED;
 static bool arm_output_addr_const_extra (FILE *, rtx);
 static bool arm_allocate_stack_slots_for_args (void);
 static bool arm_warn_func_return (tree);
+#ifdef ARM_WINCE
+static bool arm_ms_bitfield_layout_p (const_tree record_type);
+#endif
 static tree arm_promoted_type (const_tree t);
 static bool arm_scalar_mode_supported_p (machine_mode);
 static bool arm_frame_pointer_required (void);
@@ -382,6 +385,17 @@ static const struct attribute_spec arm_attribute_table[] =
 #define TARGET_ASM_ALIGNED_SI_OP NULL
 #undef  TARGET_ASM_INTEGER
 #define TARGET_ASM_INTEGER arm_assemble_integer
+
+#ifdef ARM_PE
+#undef  TARGET_ASM_UNALIGNED_HI_OP
+#define TARGET_ASM_UNALIGNED_HI_OP "\t.2byte\t"
+#undef  TARGET_ASM_UNALIGNED_SI_OP
+#define TARGET_ASM_UNALIGNED_SI_OP "\t.4byte\t"
+#undef  TARGET_ASM_UNALIGNED_DI_OP
+#define TARGET_ASM_UNALIGNED_DI_OP "\t.8byte\t"
+#undef  TARGET_ASM_UNALIGNED_TI_OP
+#define TARGET_ASM_UNALIGNED_TI_OP NULL
+#endif
 
 #undef TARGET_PRINT_OPERAND
 #define TARGET_PRINT_OPERAND arm_print_operand
@@ -625,6 +639,11 @@ static const struct attribute_spec arm_attribute_table[] =
 
 #undef TARGET_LEGITIMATE_CONSTANT_P
 #define TARGET_LEGITIMATE_CONSTANT_P arm_legitimate_constant_p
+
+#ifdef ARM_WINCE
+#undef TARGET_MS_BITFIELD_LAYOUT_P
+#define TARGET_MS_BITFIELD_LAYOUT_P arm_ms_bitfield_layout_p
+#endif
 
 #undef TARGET_CANNOT_FORCE_CONST_MEM
 #define TARGET_CANNOT_FORCE_CONST_MEM arm_cannot_force_const_mem
@@ -19520,6 +19539,7 @@ output_return_instruction (rtx operand, bool really_return, bool reverse,
   return "";
 }
 
+#ifndef ARM_PE
 /* Output in FILE asm statements needed to declare the NAME of the function
    defined by its DECL node.  */
 
@@ -19557,6 +19577,8 @@ arm_asm_declare_function_name (FILE *file, const char *name, tree decl)
 
   ARM_OUTPUT_FN_UNWIND (file, TRUE);
 }
+
+#endif
 
 /* Write the function name into the code section, directly preceding
    the function prologue.
@@ -22574,6 +22596,8 @@ arm_assemble_integer (rtx x, unsigned int size, int aligned_p)
   return default_assemble_integer (x, size, aligned_p);
 }
 
+#ifdef OBJECT_FORMAT_ELF
+
 static void
 arm_elf_asm_cdtor (rtx symbol, int priority, bool is_ctor)
 {
@@ -22623,6 +22647,7 @@ arm_elf_asm_destructor (rtx symbol, int priority)
 {
   arm_elf_asm_cdtor (symbol, priority, /*is_ctor=*/false);
 }
+#endif
 
 /* A finite state machine takes care of noticing whether or not instructions
    can be conditionally executed, and thus decrease execution time and code
@@ -25665,10 +25690,6 @@ thumb1_output_interwork (void)
 #define STUB_NAME ".real_start_of"
 
   fprintf (f, "\t.code\t16\n");
-#ifdef ARM_PE
-  if (arm_dllexport_name_p (name))
-    name = arm_strip_name_encoding (name);
-#endif
   asm_fprintf (f, "\t.globl %s%U%s\n", STUB_NAME, name);
   fprintf (f, "\t.thumb_func\n");
   asm_fprintf (f, "%s%U%s:\n", STUB_NAME, name);
@@ -27436,6 +27457,40 @@ arm_output_addr_const_extra (FILE *fp, rtx x)
     return arm_emit_vector_const (fp, x);
 
   return FALSE;
+}
+
+#ifdef ARM_WINCE
+static bool
+arm_ms_bitfield_layout_p (const_tree record_type)
+{
+  return (TARGET_MS_BITFIELD_LAYOUT &&
+	  !lookup_attribute ("gcc_struct", TYPE_ATTRIBUTES (record_type)))
+    || lookup_attribute ("ms_struct", TYPE_ATTRIBUTES (record_type));
+}
+#endif
+
+int
+arm_major_arch (void)
+{
+  if (bitmap_bit_p(arm_active_target.isa, isa_bit_ARMv6))
+    return 6;
+  else if (bitmap_bit_p(arm_active_target.isa, isa_bit_ARMv5))
+    return 5;
+  else if (bitmap_bit_p(arm_active_target.isa, isa_bit_ARMv4))
+    return 4;
+  else if (bitmap_bit_p(arm_active_target.isa, isa_bit_mode32))
+    return 3;
+  else if (bitmap_bit_p(arm_active_target.isa, isa_bit_notm))
+    return 2;
+
+  /* This should gives us a nice ICE somewhere.  */
+  return -1;
+}
+
+bool
+arm_thumb_arch_p (void)
+{
+  return bitmap_bit_p(arm_active_target.isa, isa_bit_thumb);
 }
 
 /* Output assembly for a shift instruction.
