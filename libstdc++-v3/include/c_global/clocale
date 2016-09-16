@@ -39,7 +39,9 @@
 #pragma GCC system_header
 
 #include <bits/c++config.h>
+#ifndef UNDER_CE
 #include <locale.h>
+#endif
 
 #ifndef _GLIBCXX_CLOCALE
 #define _GLIBCXX_CLOCALE 1
@@ -50,9 +52,11 @@
 
 namespace std
 {
+#ifndef UNDER_CE
   using ::lconv;
   using ::setlocale;
   using ::localeconv;
+#endif
 } // namespace std
 
 #endif

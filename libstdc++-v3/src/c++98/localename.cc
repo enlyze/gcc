@@ -43,6 +43,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  _M_impl = new _Impl(__s, 1);
 	else
 	  {
+#ifdef UNDER_CE
+	    (_M_impl = _S_classic)->_M_add_reference();
+#else
 	    // Get it from the environment.
 	    char* __env = std::getenv("LC_ALL");
 	    // If LC_ALL is set we are done.
@@ -135,6 +138,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		else
 		  _M_impl = new _Impl(__lang.c_str(), 1);
 	      }
+#endif
 	  }
       }
     else
