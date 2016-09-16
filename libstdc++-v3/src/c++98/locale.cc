@@ -148,6 +148,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   locale::_S_normalize_category(category __cat) 
   {
     int __ret = 0;
+#ifndef UNDER_CE
     if (__cat == none || ((__cat & all) && !(__cat & ~all)))
       __ret = __cat;
     else
@@ -183,6 +184,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 				  "category not found"));
 	  }
       }
+#endif
     return __ret;
   }
 
