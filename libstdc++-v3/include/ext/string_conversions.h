@@ -41,7 +41,9 @@
 #include <cstdlib>
 #include <cwchar>
 #include <cstdio>
+#ifndef UNDER_CE
 #include <cerrno>
+#endif
 
 namespace __gnu_cxx _GLIBCXX_VISIBILITY(default)
 {
@@ -59,21 +61,25 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
       _CharT* __endptr;
 
+#ifndef UNDER_CE
       struct _Save_errno {
 	_Save_errno() : _M_errno(errno) { errno = 0; }
 	~_Save_errno() { if (errno == 0) errno = _M_errno; }
 	int _M_errno;
       } const __save_errno;
+#endif
 
       const _TRet __tmp = __convf(__str, &__endptr, __base...);
 
       if (__endptr == __str)
 	std::__throw_invalid_argument(__name);
+#ifndef UNDER_CE
       else if (errno == ERANGE
 	       || (std::__are_same<_Ret, int>::__value
 		   && (__tmp < __numeric_traits<int>::__min
 		       || __tmp > __numeric_traits<int>::__max)))
 	std::__throw_out_of_range(__name);
+#endif
       else
 	__ret = __tmp;
 

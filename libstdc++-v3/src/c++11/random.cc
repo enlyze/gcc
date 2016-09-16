@@ -31,7 +31,9 @@
 # include <cpuid.h>
 #endif
 
+#ifndef UNDER_CE
 #include <cerrno>
+#endif
 #include <cstdio>
 
 #ifdef _GLIBCXX_HAVE_UNISTD_H
@@ -142,7 +144,11 @@ namespace std _GLIBCXX_VISIBILITY(default)
 	    n -= e;
 	    p = static_cast<char*>(p) + e;
 	  }
-	else if (e != -1 || errno != EINTR)
+	else if (e != -1
+#ifndef UNDER_CE
+		 || errno != EINTR
+#endif
+		 )
 	  __throw_runtime_error(__N("random_device could not be read"));
       }
     while (n > 0);
