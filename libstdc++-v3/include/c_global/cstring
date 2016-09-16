@@ -79,7 +79,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   using ::memset;
   using ::strcat;
   using ::strcmp;
+#ifndef UNDER_CE
   using ::strcoll;
+#endif
   using ::strcpy;
   using ::strcspn;
   using ::strerror;
@@ -89,7 +91,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   using ::strncpy;
   using ::strspn;
   using ::strtok;
+#ifndef UNDER_CE
   using ::strxfrm;
+#endif
   using ::strchr;
   using ::strpbrk;
   using ::strrchr;
