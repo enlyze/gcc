@@ -66,9 +66,11 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 
 #define __GTHREADS 1
 
+#ifndef UNDER_CE
 #include <errno.h>
 #ifdef __MINGW32__
 #include <_mingw.h>
+#endif
 #endif
 
 #ifndef __UNUSED_PARAM
