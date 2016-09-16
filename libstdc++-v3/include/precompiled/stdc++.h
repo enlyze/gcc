@@ -42,7 +42,9 @@
 #include <clocale>
 #include <cmath>
 #include <csetjmp>
+#ifndef UNDER_CE
 #include <csignal>
+#endif
 #include <cstdarg>
 #include <cstddef>
 #include <cstdio>
