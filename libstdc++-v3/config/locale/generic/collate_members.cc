@@ -42,7 +42,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     collate<char>::_M_compare(const char* __one, 
 			      const char* __two) const throw()
     { 
+#ifdef UNDER_CE
+      // TODO
+      int __cmp = strcasecmp(__one, __two);
+#else
       int __cmp = strcoll(__one, __two);
+#endif
       return (__cmp >> (8 * sizeof (int) - 2)) | (__cmp != 0);
     }
   
@@ -50,7 +55,15 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     size_t
     collate<char>::_M_transform(char* __to, const char* __from, 
 				size_t __n) const throw()
-    { return strxfrm(__to, __from, __n); }
+    {
+#ifdef UNDER_CE
+	    // TODO
+	    strncpy(__to, __from, __n);
+	    return strlen(__from);
+#else
+	    return strxfrm(__to, __from, __n);
+#endif
+    }
 
 #ifdef _GLIBCXX_USE_WCHAR_T
   template<>
@@ -58,7 +71,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     collate<wchar_t>::_M_compare(const wchar_t* __one, 
 				 const wchar_t* __two) const throw()
     {
+#ifdef UNDER_CE
+      int __cmp = _wcsicmp(__one, __two);
+#else
       int __cmp = wcscoll(__one, __two);
+#endif
       return (__cmp >> (8 * sizeof (int) - 2)) | (__cmp != 0);
     }
   
@@ -66,7 +83,15 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     size_t
     collate<wchar_t>::_M_transform(wchar_t* __to, const wchar_t* __from,
 				   size_t __n) const throw()
-    { return wcsxfrm(__to, __from, __n); }
+    {
+#ifdef UNDER_CE
+      // TODO
+      wcsncpy(__to, __from, __n);
+      return wcslen(__from);
+#else
+      return wcsxfrm(__to, __from, __n);
+#endif
+    }
 #endif
 
 _GLIBCXX_END_NAMESPACE_VERSION
