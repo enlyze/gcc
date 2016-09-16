@@ -233,7 +233,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       {
 	char* __buf = NULL;
 	_M_cfile_created = true;
-	if (__fd == 0)
+#ifdef UNDER_CE
+	const int stdin_fd = fileno(stdin);
+#else
+	const int stdin_fd = 0;
+#endif
+	if (__fd == stdin_fd)
 	  setvbuf(_M_cfile, __buf, _IONBF, 0);
 	__ret = this;
       }
