@@ -28,7 +28,9 @@
 
 #include <bits/basic_file.h>
 #include <fcntl.h>
+#ifndef UNDER_CE
 #include <errno.h>
+#endif
 
 #ifdef _GLIBCXX_HAVE_POLL
 #include <poll.h>
@@ -64,6 +66,10 @@
 #endif
 
 #include <limits> // For <off_t>::max() and min() and <streamsize>::max()
+
+#ifdef UNDER_CE
+#include <windows.h>
+#endif
 
 namespace 
 {
@@ -118,8 +124,10 @@ namespace
     for (;;)
       {
 	const std::streamsize __ret = write(__fd, __s, __nleft);
+#ifndef UNDER_CE
 	if (__ret == -1L && errno == EINTR)
 	  continue;
+#endif
 	if (__ret == -1L)
 	  break;
 
@@ -152,8 +160,10 @@ namespace
 	__iov[0].iov_len = __n1_left;
 
 	const std::streamsize __ret = writev(__fd, __iov, 2);
+#ifndef UNDER_CE
 	if (__ret == -1L && errno == EINTR)
 	  continue;
+#endif
 	if (__ret == -1L)
 	  break;
 
@@ -196,10 +206,14 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     if (!this->is_open() && __file)
       {
 	int __err;
+#ifndef UNDER_CE
 	errno = 0;	
 	do
+#endif
 	  __err = this->sync();
+#ifndef UNDER_CE
 	while (__err && errno == EINTR);
+#endif
 	if (!__err)
 	  {
 	    _M_cfile = __file;
@@ -272,10 +286,14 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    // for error first. However, C89/C99 (at variance with IEEE
 	    // 1003.1, f.i.) do not mandate that fclose must set errno
 	    // upon error.
+#ifndef UNDER_CE
 	    errno = 0;
 	    do
+#endif
 	      __err = fclose(_M_cfile);
+#ifndef UNDER_CE
 	    while (__err && errno == EINTR);
+#endif
 	  }
 	_M_cfile = 0;
 	if (!__err)
@@ -288,9 +306,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   __basic_file<char>::xsgetn(char* __s, streamsize __n)
   {
     streamsize __ret;
+#ifndef UNDER_CE
     do
+#endif
       __ret = read(this->fd(), __s, __n);
+#ifndef UNDER_CE
     while (__ret == -1L && errno == EINTR);
+#endif
     return __ret;
   }
 
