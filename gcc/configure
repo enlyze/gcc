@@ -7676,7 +7676,7 @@ if test "${with_bugurl+set}" = set; then :
 	   ;;
      esac
 else
-  BUGURL="http://gcc.gnu.org/bugs.html"
+  BUGURL="http://max.kellermann.name/projects/cegcc/"
 
 fi
 
