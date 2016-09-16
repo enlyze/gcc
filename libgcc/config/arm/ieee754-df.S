@@ -38,7 +38,9 @@
  * from sp used to compute the CFA.
  */
 
+#ifndef UNDER_CE
 	.cfi_sections .debug_frame
+#endif
 
 #ifndef __ARMEB__
 #define xl r0
@@ -89,10 +91,12 @@ ARM_FUNC_START adddf3
 ARM_FUNC_ALIAS aeabi_dadd adddf3
 
 1:  do_push {r4, r5, lr}        @ sp -= 12
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 12   @ CFA is now sp + previousOffset + 12
 	.cfi_rel_offset r4, 0       @ Registers are saved from sp to sp + 8
 	.cfi_rel_offset r5, 4
 	.cfi_rel_offset lr, 8
+#endif
 
 	@ Look for zeroes, equal values, INF, or NAN.
 	shift1	lsl, r4, xh, #1
@@ -445,10 +449,12 @@ ARM_FUNC_ALIAS aeabi_ui2d floatunsidf
 	RETc(eq)
 
 	do_push {r4, r5, lr}        @ sp -= 12
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 12   @ CFA is now sp + previousOffset + 12
 	.cfi_rel_offset r4, 0       @ Registers are saved from sp + 0 to sp + 8.
 	.cfi_rel_offset r5, 4
 	.cfi_rel_offset lr, 8
+#endif
 
 	mov	r4, #0x400		@ initial exponent
 	add	r4, r4, #(52-1 - 1)
@@ -473,10 +479,12 @@ ARM_FUNC_ALIAS aeabi_i2d floatsidf
 	RETc(eq)
 
 	do_push {r4, r5, lr}        @ sp -= 12
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 12   @ CFA is now sp + previousOffset + 12
 	.cfi_rel_offset r4, 0       @ Registers are saved from sp + 0 to sp + 8.
 	.cfi_rel_offset r5, 4
 	.cfi_rel_offset lr, 8
+#endif
 
 	mov	r4, #0x400		@ initial exponent
 	add	r4, r4, #(52-1 - 1)
@@ -514,10 +522,12 @@ ARM_FUNC_ALIAS aeabi_f2d extendsfdf2
 
 	@ value was denormalized.  We can normalize it now.
 	do_push	{r4, r5, lr}
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 12   @ CFA is now sp + previousOffset + 12
 	.cfi_rel_offset r4, 0       @ Registers are saved from sp + 0 to sp + 8.
 	.cfi_rel_offset r5, 4
 	.cfi_rel_offset lr, 8
+#endif
 
 	mov	r4, #0x380		@ setup corresponding exponent
 	and	r5, xh, #0x80000000	@ move sign bit in r5
@@ -531,37 +541,45 @@ ARM_FUNC_ALIAS aeabi_f2d extendsfdf2
 ARM_FUNC_START floatundidf
 ARM_FUNC_ALIAS aeabi_ul2d floatundidf
 	CFI_START_FUNCTION
+#ifndef UNDER_CE
 	.cfi_remember_state        @ Save the current CFA state.
+#endif
 
 	orrs	r2, r0, r1
 	do_it	eq
 	RETc(eq)
 
 	do_push {r4, r5, lr}       @ sp -= 12
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 12  @ CFA is now sp + previousOffset + 12
 	.cfi_rel_offset r4, 0      @ Registers are saved from sp + 0 to sp + 8
 	.cfi_rel_offset r5, 4
 	.cfi_rel_offset lr, 8
+#endif
 
 	mov	r5, #0
 	b	2f
 
 ARM_FUNC_START floatdidf
 ARM_FUNC_ALIAS aeabi_l2d floatdidf
+#ifndef UNDER_CE
 	.cfi_restore_state
 	@ Restore the CFI state we saved above. If we didn't do this then the
 	@ following instructions would have the CFI state that was set by the
 	@ offset adjustments made in floatundidf.
+#endif
 
 	orrs	r2, r0, r1
 	do_it	eq
 	RETc(eq)
 
 	do_push {r4, r5, lr}       @ sp -= 12
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 12  @ CFA is now sp + previousOffset + 12
 	.cfi_rel_offset r4, 0      @ Registers are saved from sp to sp + 8
 	.cfi_rel_offset r5, 4
 	.cfi_rel_offset lr, 8
+#endif
 
 	ands	r5, ah, #0x80000000	@ sign bit in r5
 	bpl	2f
@@ -619,11 +637,13 @@ ARM_FUNC_ALIAS aeabi_dmul muldf3
 	CFI_START_FUNCTION
 
 	do_push {r4, r5, r6, lr}    @ sp -= 16
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 16   @ CFA is now sp + previousOffset + 16
 	.cfi_rel_offset r4, 0       @ Registers are saved from sp to sp + 12.
 	.cfi_rel_offset r5, 4
 	.cfi_rel_offset r6, 8
 	.cfi_rel_offset lr, 12
+#endif
 
 	@ Mask out exponents, trap any zero/denormal/INF/NAN.
 	mov	ip, #0xff
@@ -659,6 +679,7 @@ ARM_FUNC_ALIAS aeabi_dmul muldf3
 
 	@ Well, no way to make it shorter without the umull instruction.
 	stmfd   sp!, {r6, r7, r8, r9, sl, fp}   @ sp -= 24
+#ifndef UNDER_CE
 	.cfi_remember_state         @ Save the current CFI state.
 	.cfi_adjust_cfa_offset 24   @ CFA is now sp + previousOffset + 24.
 	.cfi_rel_offset r6, 0       @ Registers are saved from sp to sp + 20.
@@ -667,6 +688,7 @@ ARM_FUNC_ALIAS aeabi_dmul muldf3
 	.cfi_rel_offset r9, 12
 	.cfi_rel_offset sl, 16
 	.cfi_rel_offset fp, 20
+#endif
 
 	mov	r7, xl, lsr #16
 	mov	r8, yl, lsr #16
@@ -942,11 +964,13 @@ ARM_FUNC_ALIAS aeabi_ddiv divdf3
 	CFI_START_FUNCTION
 	
 	do_push	{r4, r5, r6, lr}
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 16
 	.cfi_rel_offset r4, 0
 	.cfi_rel_offset r5, 4
 	.cfi_rel_offset r6, 8
 	.cfi_rel_offset lr, 12
+#endif
 
 	@ Mask out exponents, trap any zero/denormal/INF/NAN.
 	mov	ip, #0xff
@@ -1156,10 +1180,12 @@ ARM_FUNC_ALIAS eqdf2 cmpdf2
 	mov	ip, #1			@ how should we specify unordered here?
 
 1:	str	ip, [sp, #-4]!
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 4        @ CFA is now sp + previousOffset + 4.
 	@ We're not adding CFI for ip as it's pushed into the stack
 	@ only because @ it may be popped off later as a return value
 	@ (i.e. we're not preserving @ it anyways).
+#endif
 
 	@ Trap any INF/NAN first.
 	mov	ip, xh, lsl #1
@@ -1168,6 +1194,7 @@ ARM_FUNC_ALIAS eqdf2 cmpdf2
 	do_it	ne
 	COND(mvn,s,ne)	ip, ip, asr #21
 	beq	3f
+#ifndef UNDER_CE
 	.cfi_remember_state
 	@ Save the current CFI state. This is done because the branch
 	@ is conditional, @ and if we don't take it we'll issue a
@@ -1175,10 +1202,13 @@ ARM_FUNC_ALIAS eqdf2 cmpdf2
 	@ however, the .cfi_adjust_cfa_offset from the non-branch @ code
 	@ will affect the branch code as well. To avoid this we'll
 	@ restore @ the current state before executing the branch code.
+#endif
 
 	@ Test for equality.  @ Note that 0.0 is equal to -0.0.
 2:	add	sp, sp, #4
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset -4       @ CFA is now sp + previousOffset.
+#endif
 
 	orrs	ip, xl, xh, lsl #1	@ if x == 0.0 or -0.0
 	do_it	eq, e
@@ -1210,9 +1240,11 @@ ARM_FUNC_ALIAS eqdf2 cmpdf2
 
 3:  @ Look for a NAN.
 
+#ifndef UNDER_CE
 	@ Restore the previous CFI state (i.e. keep the CFI state as it was
 	@ before the branch).
 	.cfi_restore_state
+#endif
 
 	mov ip, xh, lsl #1
 	mvns	ip, ip, asr #21
@@ -1226,7 +1258,9 @@ ARM_FUNC_ALIAS eqdf2 cmpdf2
 	beq	2b			@ y is not NAN
 
 5:	ldr	r0, [sp], #4		@ unordered return code
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset -4       @ CFA is now sp + previousOffset.
+#endif
 
 	RET
 
@@ -1256,9 +1290,11 @@ ARM_FUNC_ALIAS aeabi_cdcmple aeabi_cdcmpeq
 	@ The status-returning routines are required to preserve all
 	@ registers except ip, lr, and cpsr.
 6:	do_push	{r0, lr}
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8.
 	.cfi_rel_offset r0, 0     @ Previous r0 is saved at sp.
 	.cfi_rel_offset lr, 4     @ Previous lr is saved at sp + 4.
+#endif
 
 	ARM_CALL cmpdf2
 	@ Set the Z flag correctly, and the C flag unconditionally.
@@ -1279,8 +1315,10 @@ ARM_FUNC_START	aeabi_dcmpeq
 	CFI_START_FUNCTION
 
 	str lr, [sp, #-8]!        @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cdcmple
 	do_it	eq, e
@@ -1296,8 +1334,10 @@ ARM_FUNC_START	aeabi_dcmplt
 	CFI_START_FUNCTION
 
 	str lr, [sp, #-8]!        @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cdcmple
 	do_it	cc, e
@@ -1312,8 +1352,10 @@ ARM_FUNC_START	aeabi_dcmple
 	CFI_START_FUNCTION
 
 	str lr, [sp, #-8]!        @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cdcmple
 	do_it	ls, e
@@ -1328,8 +1370,10 @@ ARM_FUNC_START	aeabi_dcmpge
 	CFI_START_FUNCTION
 
 	str lr, [sp, #-8]!        @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cdrcmple
 	do_it	ls, e
@@ -1344,8 +1388,10 @@ ARM_FUNC_START	aeabi_dcmpgt
 	CFI_START_FUNCTION
 
 	str lr, [sp, #-8]!        @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cdrcmple
 	do_it	cc, e
@@ -1363,7 +1409,9 @@ ARM_FUNC_START	aeabi_dcmpgt
 
 ARM_FUNC_START unorddf2
 ARM_FUNC_ALIAS aeabi_dcmpun unorddf2
+#ifndef UNDER_CE
 	.cfi_startproc
+#endif
 
 	mov	ip, xh, lsl #1
 	mvns	ip, ip, asr #21
@@ -1381,7 +1429,9 @@ ARM_FUNC_ALIAS aeabi_dcmpun unorddf2
 3:	mov	r0, #1			@ arguments are unordered.
 	RET
 
+#ifndef UNDER_CE
 	.cfi_endproc
+#endif
 	FUNC_END aeabi_dcmpun
 	FUNC_END unorddf2
 

@@ -1973,13 +1973,17 @@ LSYM(Lchange_\register):
 #endif /* Arch supports thumb.  */
 
 .macro CFI_START_FUNCTION
+#ifndef UNDER_CE
 	.cfi_startproc
 	.cfi_remember_state
+#endif
 .endm
 
 .macro CFI_END_FUNCTION
+#ifndef UNDER_CE
 	.cfi_restore_state
 	.cfi_endproc
+#endif
 .endm
 
 #ifndef __symbian__
