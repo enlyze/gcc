@@ -5341,9 +5341,13 @@ arm_return_in_memory (const_tree type, const_tree fntype)
       return (size < 0 || size > UNITS_PER_WORD);
     }
 
-  /* For the arm-wince targets we choose to be compatible with Microsoft's
-     ARM and Thumb compilers, which always return aggregates in memory.  */
-#ifndef ARM_WINCE
+#ifdef ARM_WINCE
+  if (TARGET_RETURN_AGGREGATES_IN_MEMORY
+      && (TREE_CODE (type) == RECORD_TYPE
+	  || TREE_CODE (type) == UNION_TYPE))
+    return 1;
+#endif
+
   /* All structures/unions bigger than one word are returned in memory.
      Also catch the case where int_size_in_bytes returns -1.  In this case
      the aggregate is either huge or of variable size, and in either case
@@ -5420,7 +5424,6 @@ arm_return_in_memory (const_tree type, const_tree fntype)
 
       return false;
     }
-#endif /* not ARM_WINCE */
 
   /* Return all other types in memory.  */
   return true;
