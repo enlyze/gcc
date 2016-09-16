@@ -139,7 +139,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   using ::div;
   using ::exit;
   using ::free;
+#ifdef UNDER_CE
+  static inline char *getenv(const char *) { return 0; }
+#else
   using ::getenv;
+#endif
   using ::labs;
   using ::ldiv;
   using ::malloc;
@@ -162,7 +166,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   using ::strtod;
   using ::strtol;
   using ::strtoul;
+#ifndef UNDER_CE
   using ::system;
+#endif
 #ifdef _GLIBCXX_USE_WCHAR_T
 #ifndef UNDER_CE
   using ::wcstombs;
