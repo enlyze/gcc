@@ -47,7 +47,11 @@ namespace
     {
       // XXX locale issues: how does one get or set loc.
       // _GLIBCXX_HAVE_STRERROR_L, strerror_l(i, cloc)
+#ifdef UNDER_CE
+      return string("unknown system error");
+#else
       return string(strerror(i));
+#endif
     }
   };
 
@@ -63,7 +67,11 @@ namespace
     {
       // XXX locale issues: how does one get or set loc.
       // _GLIBCXX_HAVE_STRERROR_L, strerror_l(i, cloc)
+#ifdef UNDER_CE
+      return string("unknown system error");
+#else
       return string(strerror(i));
+#endif
     }
   };
 
