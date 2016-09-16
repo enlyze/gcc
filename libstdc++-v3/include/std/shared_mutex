@@ -78,12 +78,14 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     __shared_mutex_pthread()
     {
       int __ret = pthread_rwlock_init(&_M_rwlock, NULL);
+#ifndef UNDER_CE
       if (__ret == ENOMEM)
 	__throw_bad_alloc();
       else if (__ret == EAGAIN)
 	__throw_system_error(int(errc::resource_unavailable_try_again));
       else if (__ret == EPERM)
 	__throw_system_error(int(errc::operation_not_permitted));
+#endif /* !UNDER_CE */
       // Errors not handled: EBUSY, EINVAL
       __glibcxx_assert(__ret == 0);
     }
@@ -625,8 +627,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       void
       unlock()
       {
+#ifndef UNDER_CE
 	if (!_M_owns)
 	  __throw_system_error(int(errc::resource_deadlock_would_occur));
+#endif /* !UNDER_CE */
 	_M_pm->unlock_shared();
 	_M_owns = false;
       }
@@ -659,10 +663,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       void
       _M_lockable() const
       {
+#ifndef UNDER_CE
 	if (_M_pm == nullptr)
 	  __throw_system_error(int(errc::operation_not_permitted));
 	if (_M_owns)
 	  __throw_system_error(int(errc::resource_deadlock_would_occur));
+#endif /* !UNDER_CE */
       }
 
       mutex_type*	_M_pm;

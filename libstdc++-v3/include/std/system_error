@@ -36,7 +36,9 @@
 #else
 
 #include <bits/c++config.h>
+#ifndef UNDER_CE
 #include <bits/error_constants.h>
+#endif /* !UNDER_CE */
 #include <iosfwd>
 #include <stdexcept>
 
@@ -56,9 +58,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   template<typename _Tp>
     struct is_error_condition_enum : public false_type { };
 
+#ifndef UNDER_CE
   template<> 
     struct is_error_condition_enum<errc>
     : public true_type { };
+#endif /* !UNDER_CE */
 
   inline namespace _V2 {
 
@@ -128,7 +132,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   } // end inline namespace
 
+#ifndef UNDER_CE
   error_code make_error_code(errc) noexcept;
+#endif /* !UNDER_CE */
 
   template<typename _Tp>
     struct hash;
@@ -191,10 +197,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     const error_category* 	_M_cat;
   };
 
+#ifndef UNDER_CE
   // 19.4.2.6 non-member functions
   inline error_code
   make_error_code(errc __e) noexcept
   { return error_code(static_cast<int>(__e), generic_category()); }
+#endif /* !UNDER_CE */
 
   inline bool
   operator<(const error_code& __lhs, const error_code& __rhs) noexcept
@@ -209,7 +217,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     operator<<(basic_ostream<_CharT, _Traits>& __os, const error_code& __e)
     { return (__os << __e.category().name() << ':' << __e.value()); }
 
+#ifndef UNDER_CE
   error_condition make_error_condition(errc) noexcept;
+#endif /* !UNDER_CE */
 
   /// error_condition
   // Portable error identification
@@ -265,10 +275,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     const error_category* 	_M_cat;
   };
 
+#ifndef UNDER_CE
   // 19.4.3.6 non-member functions
   inline error_condition
   make_error_condition(errc __e) noexcept
   { return error_condition(static_cast<int>(__e), generic_category()); }
+#endif /* !UNDER_CE */
 
   inline bool 
   operator<(const error_condition& __lhs,

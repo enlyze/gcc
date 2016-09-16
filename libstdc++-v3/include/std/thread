@@ -38,7 +38,9 @@
 #include <chrono>
 #include <functional>
 #include <memory>
+#ifndef UNDER_CE
 #include <cerrno>
+#endif /* !UNDER_CE */
 #include <bits/functexcept.h>
 #include <bits/functional_hash.h>
 #include <bits/gthr.h>
