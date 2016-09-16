@@ -349,6 +349,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   streamsize
   __basic_file<char>::showmanyc()
   {
+#ifdef __MINGW32CE__
+    BY_HANDLE_FILE_INFORMATION finfo;
+    if (GetFileInformationByHandle((HANDLE)this->fd(), &finfo))
+      return finfo.nFileSizeLow - SetFilePointer((HANDLE)this->fd(), 0, NULL, FILE_CURRENT);
+#else
 #ifndef _GLIBCXX_NO_IOCTL
 #ifdef FIONREAD
     // Pipes and sockets.
@@ -384,6 +389,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     const int __err = fstat(this->fd(), &__buffer);
     if (!__err && _GLIBCXX_ISREG(__buffer.st_mode))
       return __buffer.st_size - lseek(this->fd(), 0, ios_base::cur);
+#endif
 #endif
 #endif
     return 0;
