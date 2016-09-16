@@ -426,6 +426,11 @@ arm*-*-eabi* | arm*-*-symbianelf* | arm*-*-rtems*)
 	tmake_file="$tmake_file t-softfp-sfdf t-softfp-excl arm/t-softfp t-softfp"
 	extra_parts="$extra_parts crtfastmath.o"
 	unwind_header=config/arm/unwind-arm.h
+        ;;
+arm*-*-mingw32ce* | arm*-*-cegcc*)
+	extra_parts="crtbegin.o crtend.o"
+	tmake_file="$tmake_file arm/t-wince-pe"
+	tmake_file="$tmake_file i386/t-gthr-win32"
 	;;
 avr-*-rtems*)
 	tmake_file="$tmake_file avr/t-avr avr/t-rtems t-fpbit"
