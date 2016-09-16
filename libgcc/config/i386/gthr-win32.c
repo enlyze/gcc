@@ -32,7 +32,9 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 # define __GTHREAD_HIDE_WIN32API 1
 #endif
 #undef  __GTHREAD_I486_INLINE_LOCK_PRIMITIVES
+#ifndef UNDER_CE
 #define __GTHREAD_I486_INLINE_LOCK_PRIMITIVES
+#endif
 #include "gthr-win32.h"
 
 /* Windows32 threads specific definitions. The windows32 threading model

@@ -73,6 +73,10 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 #endif
 #endif
 
+#ifdef UNDER_CE
+# define __GTHREAD_HIDE_WIN32API 1
+#endif
+
 #ifndef __UNUSED_PARAM
 #define __UNUSED_PARAM(x) x
 #endif
