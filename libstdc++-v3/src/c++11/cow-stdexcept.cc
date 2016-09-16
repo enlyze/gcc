@@ -184,6 +184,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 // are not defined by us.  Without such support, the exceptions will not be
 // declared transaction-safe, so we just don't provide transactional clones
 // in this case.
+#ifndef UNDER_CE
 #if _GLIBCXX_USE_WEAK_REF
 
 extern "C" {
@@ -439,3 +440,4 @@ CTORDTOR(15underflow_error, std::underflow_error, runtime_error)
 }
 
 #endif  // _GLIBCXX_USE_WEAK_REF
+#endif /* UNDER_CE */
