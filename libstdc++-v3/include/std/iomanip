@@ -337,6 +337,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       return __os; 
     }
 
+#ifndef UNDER_CE
   template<typename _CharT>
     struct _Put_time
     {
@@ -445,6 +446,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
         }
       return __is;
     }
+#endif
 
 #if __cplusplus > 201103L
 
