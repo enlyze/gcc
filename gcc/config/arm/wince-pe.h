@@ -44,19 +44,16 @@
 #undef  FPUTYPE_DEFAULT
 #define FPUTYPE_DEFAULT "vfp"
 
-#ifndef ASM_SPEC
+#undef ASM_SPEC
 #define ASM_SPEC "\
 %{mbig-endian:-EB} \
 %{mlittle-endian:-EL} \
-%{mcpu=*:-mcpu=%*} \
-%{march=*:-march=%*} \
+%(asm_cpu_spec) \
 %{mapcs-*:-mapcs-%*} \
 %(subtarget_asm_float_spec) \
 %{mthumb-interwork:-mthumb-interwork} \
-%{msoft-float:-mfloat-abi=soft} %{mhard-float:-mfloat-abi=hard} \
 %{mfloat-abi=*} %{mfpu=*} \
 %(subtarget_extra_asm_spec)"
-#endif
 
 #define TARGET_OS_CPP_BUILTINS()					\
   do									\
