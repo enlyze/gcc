@@ -1768,9 +1768,16 @@ public:
   /* opt_pass methods: */
   virtual bool gate (function *)
     {
+#ifdef ARM_WINCE
+      /* there's no sincos() on WinCE; it's emulated using cexp(), and
+	 cexp() calls sin() and cos(), which again will be optimized
+	 to sincos() - endless loop closed */
+      return false;
+#else
       /* We no longer require either sincos or cexp, since powi expansion
 	 piggybacks on this pass.  */
       return optimize;
+#endif
     }
 
   virtual unsigned int execute (function *);
