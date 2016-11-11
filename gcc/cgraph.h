@@ -2376,7 +2376,7 @@ symtab_node::in_same_comdat_group_p (symtab_node *target)
 {
   symtab_node *source = this;
 
-  if (cgraph_node *cn = dyn_cast <cgraph_node *> (target))
+  if (cgraph_node *cn = dyn_cast <cgraph_node *> (source))
     {
       if (cn->global.inlined_to)
 	source = cn->global.inlined_to;
