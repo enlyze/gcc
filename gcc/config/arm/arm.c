@@ -624,6 +624,8 @@ static const struct attribute_spec arm_attribute_table[] =
 #ifdef ARM_WINCE
 #undef TARGET_MS_BITFIELD_LAYOUT_P
 #define TARGET_MS_BITFIELD_LAYOUT_P arm_ms_bitfield_layout_p
+#undef TARGET_BINDS_LOCAL_P
+#define TARGET_BINDS_LOCAL_P arm_pe_binds_local_p
 #endif
 
 #undef TARGET_CANNOT_FORCE_CONST_MEM
