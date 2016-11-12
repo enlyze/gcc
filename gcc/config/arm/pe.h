@@ -69,6 +69,11 @@
 
 #define SUPPORTS_ONE_ONLY 1
 
+/* workaround for "error: comdat-local function called by XYZ outside
+   its comdat" */
+#undef MAKE_DECL_ONE_ONLY
+#define MAKE_DECL_ONE_ONLY(DECL) (DECL_WEAK (DECL) = 1)
+
 /* Switch into a generic section.  */
 #undef  TARGET_ASM_NAMED_SECTION
 #define TARGET_ASM_NAMED_SECTION  default_pe_asm_named_section
