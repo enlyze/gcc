@@ -17765,7 +17765,9 @@ arm_emit_call_insn (rtx pat, rtx addr, bool sibcall)
       use_reg (&CALL_INSN_FUNCTION_USAGE (insn), cfun->machine->pic_reg);
     }
 
+#ifndef ARM_PE
   if (TARGET_AAPCS_BASED)
+#endif
     {
       /* For AAPCS, IP and CC can be clobbered by veneers inserted by the
 	 linker.  We need to add an IP clobber to allow setting
