@@ -268,7 +268,11 @@ maybe_thunk_body (tree fn, bool force)
   DECL_ABSTRACT_P (fn) = false;
   if (!DECL_WEAK (fn))
     {
+      /* leave public on WinCE to work around "error: comdat-local
+	 function called by XYZ outside its comdat" */
+#ifndef ARM_PE
       TREE_PUBLIC (fn) = false;
+#endif
       DECL_EXTERNAL (fn) = false;
       DECL_INTERFACE_KNOWN (fn) = true;
     }
