@@ -128,15 +128,23 @@ namespace std
   using ::putc;
   using ::putchar;
   using ::puts;
+#ifndef UNDER_CE
   using ::remove;
+#endif
   using ::rename;
+#ifndef UNDER_CE
   using ::rewind;
+#endif
   using ::scanf;
+#ifndef UNDER_CE
   using ::setbuf;
+#endif
   using ::setvbuf;
   using ::sprintf;
   using ::sscanf;
+#ifndef UNDER_CE
   using ::tmpfile;
+#endif
 #if _GLIBCXX_USE_TMPNAM
   using ::tmpnam;
 #endif
