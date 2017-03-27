@@ -1795,6 +1795,24 @@ x86_64-*-fuchsia*)
 	tmake_file="${tmake_file} i386/t-x86_64-elf"
 	tm_file="${tm_file} i386/unix.h i386/att.h elfos.h newlib-stdint.h i386/i386elf.h i386/x86-64.h fuchsia.h"
 	;;
+arm-*-mingw32*)
+	tm_file="arm/semi.h arm/aout.h ${tm_file} arm/coff.h dbxcoff.h arm/pe.h arm/wince-pe.h arm/mingw32.h arm/mingw-stdint.h"
+	xm_file="i386/xm-mingw32.h"
+	tmake_file="${tmake_file} i386/t-cygming arm/t-arm arm/t-wince-pe arm/t-cygming arm/t-mingw32"
+ 	target_gtfiles="${target_gtfiles} \$(srcdir)/config/arm/pe.c"
+ 	extra_options="${extra_options} arm/pe.opt arm/cygming.opt"
+ 	extra_objs="${extra_objs} pe.o pe-stubs.o"
+	c_target_objs="${c_target_objs} msformat-c.o"
+	cxx_target_objs="${cxx_target_objs} pe-cxx.o msformat-c.o"
+	default_use_cxa_atexit=yes
+ 	case ${enable_threads} in
+ 	  "" | yes | win32)
+ 	  thread_file='win32'
+	  tmake_file="${tmake_file} i386/t-gthr-win32"
+ 	  ;;
+ 	esac
+	tmake_file="${tmake_file} arm/t-arm-softfp soft-fp/t-softfp"
+	;;
 ia64*-*-elf*)
 	tm_file="${tm_file} dbxelf.h elfos.h newlib-stdint.h ia64/sysv4.h ia64/elf.h"
 	tmake_file="ia64/t-ia64"
