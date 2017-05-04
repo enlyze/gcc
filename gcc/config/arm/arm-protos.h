@@ -24,6 +24,11 @@
 
 #include "sbitmap.h"
 
+extern void arm_pe_maybe_record_exported_symbol (tree, const char *, int);
+
+extern void arm_pe_start_function (FILE *, const char *, tree);
+extern void arm_pe_end_function (FILE *, const char *, tree);
+
 extern enum unwind_info_type arm_except_unwind_info (struct gcc_options *);
 extern int use_return_insn (int, rtx);
 extern bool use_simple_return_p (void);
@@ -45,6 +50,9 @@ extern HOST_WIDE_INT thumb_compute_initial_elimination_offset (unsigned int,
 							       unsigned int);
 extern unsigned int arm_dbx_register_number (unsigned int);
 extern void arm_output_fn_unwind (FILE *, bool);
+
+extern int arm_major_arch (void);
+extern bool arm_thumb_arch_p (void);
 
 extern rtx arm_expand_builtin (tree exp, rtx target, rtx subtarget
 			       ATTRIBUTE_UNUSED, enum machine_mode mode
