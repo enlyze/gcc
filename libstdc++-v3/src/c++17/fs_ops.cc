@@ -35,7 +35,9 @@
 #include <stack>
 #include <stdlib.h>
 #include <stdio.h>
+#ifndef UNDER_CE
 #include <errno.h>
+#endif /* !UNDER_CE */
 #include <limits.h>  // PATH_MAX
 #ifdef _GLIBCXX_HAVE_FCNTL_H
 # include <fcntl.h>  // AT_FDCWD, AT_SYMLINK_NOFOLLOW
@@ -188,11 +190,13 @@ fs::canonical(const path& p, error_code& ec)
       ec.clear();
       return result;
     }
+#ifndef UNDER_CE
   if (errno != ENAMETOOLONG)
     {
       ec.assign(errno, std::generic_category());
       return result;
     }
+#endif /* !UNDER_CE */
 #endif
 
   if (!exists(pa, ec))
@@ -334,18 +338,22 @@ fs::copy(const path& from, const path& to, copy_options options,
       ? posix::lstat(from.c_str(), &from_st)
       : posix::stat(from.c_str(), &from_st))
     {
+#ifndef UNDER_CE
       ec.assign(errno, std::generic_category());
+#endif /* !UNDER_CE */
       return;
     }
   if (use_lstat
       ? posix::lstat(to.c_str(), &to_st)
       : posix::stat(to.c_str(), &to_st))
     {
+#ifndef UNDER_CE
       if (!is_not_found_errno(errno))
 	{
 	  ec.assign(errno, std::generic_category());
 	  return;
 	}
+#endif /* !UNDER_CE */
       t = file_status{file_type::not_found};
     }
   else
@@ -581,9 +589,11 @@ namespace
       = static_cast<std::underlying_type_t<fs::perms>>(perm);
     if (posix::mkdir(p.c_str(), mode))
       {
+#ifndef UNDER_CE
 	const int err = errno;
 	if (err != EEXIST || !is_directory(p, ec))
 	  ec.assign(err, std::generic_category());
+#endif /* !UNDER_CE */
       }
     else
       {
@@ -634,7 +644,9 @@ fs::create_directory(const path& p, const path& attributes,
   stat_type st;
   if (posix::stat(attributes.c_str(), &st))
     {
+#ifndef UNDER_CE
       ec.assign(errno, std::generic_category());
+#endif /* !UNDER_CE */
       return false;
     }
   return create_dir(p, static_cast<perms>(st.st_mode), ec);

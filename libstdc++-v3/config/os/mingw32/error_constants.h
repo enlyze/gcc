@@ -31,7 +31,9 @@
 #  define _GLIBCXX_ERROR_CONSTANTS
 
 #include <bits/c++config.h>
+#ifndef UNDER_CE
 #include <cerrno>
+#endif /* !UNDER_CE */
 
 namespace std _GLIBCXX_VISIBILITY(default)
 {
@@ -41,6 +43,14 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 // replaced by Winsock WSA-prefixed equivalents.
   enum class errc
     {
+#ifdef UNDER_CE
+      no_error,
+      not_supported,
+      invalid_argument,
+      value_too_large,
+      illegal_byte_sequence,
+      file_exists,
+#else /* UNDER_CE */
 //    address_family_not_supported = 		EAFNOSUPPORT,
 //    address_in_use = 				EADDRINUSE,
 //    address_not_available = 			EADDRNOTAVAIL,
@@ -134,6 +144,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       value_too_large = 			EOVERFLOW
 #endif
 //    wrong_protocol_type = 			EPROTOTYPE
+#endif /* !UNDER_CE */
    };
 
 _GLIBCXX_END_NAMESPACE_VERSION

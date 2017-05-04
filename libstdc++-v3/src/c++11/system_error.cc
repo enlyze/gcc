@@ -29,7 +29,9 @@
 #include <system_error>
 #include <bits/functexcept.h>
 #include <limits>
+#ifndef UNDER_CE
 #include <errno.h>
+#endif
 #undef __sso_string
 
 namespace
@@ -48,7 +50,12 @@ namespace
     {
       // XXX locale issues: how does one get or set loc.
       // _GLIBCXX_HAVE_STRERROR_L, strerror_l(i, cloc)
+#ifdef UNDER_CE
+      (void)i;
+      return string("unknown system error");
+#else
       return string(strerror(i));
+#endif
     }
   };
 
@@ -64,9 +71,14 @@ namespace
     {
       // XXX locale issues: how does one get or set loc.
       // _GLIBCXX_HAVE_STRERROR_L, strerror_l(i, cloc)
+#ifdef UNDER_CE
+      return string("unknown system error");
+#else
       return string(strerror(i));
+#endif
     }
 
+#ifndef UNDER_CE
     virtual std::error_condition
     default_error_condition(int ev) const noexcept
     {
@@ -321,6 +333,7 @@ namespace
 	return std::error_condition(ev, std::system_category());
       }
     }
+#endif
   };
 
   const generic_error_category generic_category_instance{};
