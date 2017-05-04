@@ -24,7 +24,9 @@
 
 #include "gstdint.h"
 #include <atomic>
+#if defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1)
 #include <mutex>
+#endif
 
 // XXX GLIBCXX_ABI Deprecated
 // gcc-4.7.0
