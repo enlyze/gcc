@@ -178,7 +178,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   using ::wcrtomb;
   using ::wcscat;
   using ::wcscmp;
+#ifndef UNDER_CE
   using ::wcscoll;
+#endif
   using ::wcscpy;
   using ::wcscspn;
   using ::wcsftime;
@@ -195,7 +197,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   using ::wcstok;
   using ::wcstol;
   using ::wcstoul;
+#ifndef UNDER_CE
   using ::wcsxfrm;
+#endif
   using ::wctob;
   using ::wmemcmp;
   using ::wmemcpy;
