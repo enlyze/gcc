@@ -3197,7 +3197,9 @@ AC_DEFUN([GLIBCXX_ENABLE_WCHAR_T], [
 			using ::wcscat;
 			using ::wcschr;
 			using ::wcscmp;
+			#ifndef UNDER_CE
 			using ::wcscoll;
+			#endif
 			using ::wcscpy;
 			using ::wcscspn;
 			using ::wcsftime;
@@ -3214,7 +3216,9 @@ AC_DEFUN([GLIBCXX_ENABLE_WCHAR_T], [
 			using ::wcstok;
 			using ::wcstol;
 			using ::wcstoul;
+			#ifndef UNDER_CE
 			using ::wcsxfrm;
+			#endif
 			using ::wctob;
 			using ::wmemchr;
 			using ::wmemcmp;
