@@ -33,7 +33,9 @@
 #include <cassert>
 #endif
 #include <cctype>
+#ifndef UNDER_CE
 #include <cerrno>
+#endif
 #include <cfloat>
 #include <ciso646>
 #include <climits>

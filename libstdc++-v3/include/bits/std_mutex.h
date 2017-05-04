@@ -258,11 +258,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       void
       lock()
       {
+#ifndef UNDER_CE
 	if (!_M_device)
 	  __throw_system_error(int(errc::operation_not_permitted));
 	else if (_M_owns)
 	  __throw_system_error(int(errc::resource_deadlock_would_occur));
 	else
+#endif /* !UNDER_CE */
 	  {
 	    _M_device->lock();
 	    _M_owns = true;
@@ -272,11 +274,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       bool
       try_lock()
       {
+#ifndef UNDER_CE
 	if (!_M_device)
 	  __throw_system_error(int(errc::operation_not_permitted));
 	else if (_M_owns)
 	  __throw_system_error(int(errc::resource_deadlock_would_occur));
 	else
+#endif /* !UNDER_CE */
 	  {
 	    _M_owns = _M_device->try_lock();
 	    return _M_owns;
@@ -287,11 +291,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	bool
 	try_lock_until(const chrono::time_point<_Clock, _Duration>& __atime)
 	{
+#ifndef UNDER_CE
 	  if (!_M_device)
 	    __throw_system_error(int(errc::operation_not_permitted));
 	  else if (_M_owns)
 	    __throw_system_error(int(errc::resource_deadlock_would_occur));
 	  else
+#endif /* !UNDER_CE */
 	    {
 	      _M_owns = _M_device->try_lock_until(__atime);
 	      return _M_owns;
@@ -302,11 +308,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	bool
 	try_lock_for(const chrono::duration<_Rep, _Period>& __rtime)
 	{
+#ifndef UNDER_CE
 	  if (!_M_device)
 	    __throw_system_error(int(errc::operation_not_permitted));
 	  else if (_M_owns)
 	    __throw_system_error(int(errc::resource_deadlock_would_occur));
 	  else
+#endif /* !UNDER_CE */
 	    {
 	      _M_owns = _M_device->try_lock_for(__rtime);
 	      return _M_owns;
@@ -316,9 +324,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       void
       unlock()
       {
+#ifndef UNDER_CE
 	if (!_M_owns)
 	  __throw_system_error(int(errc::operation_not_permitted));
 	else if (_M_device)
+#endif /* !UNDER_CE */
 	  {
 	    _M_device->unlock();
 	    _M_owns = false;
