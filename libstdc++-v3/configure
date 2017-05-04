@@ -16474,7 +16474,9 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 			using ::wcscat;
 			using ::wcschr;
 			using ::wcscmp;
+			#ifndef UNDER_CE
 			using ::wcscoll;
+			#endif
 			using ::wcscpy;
 			using ::wcscspn;
 			using ::wcsftime;
@@ -16491,7 +16493,9 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 			using ::wcstok;
 			using ::wcstol;
 			using ::wcstoul;
+			#ifndef UNDER_CE
 			using ::wcsxfrm;
+			#endif
 			using ::wctob;
 			using ::wmemchr;
 			using ::wmemcmp;
