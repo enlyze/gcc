@@ -57,6 +57,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		   const int __size __attribute__((__unused__)),
 		   const char* __fmt, ...)
   {
+#ifndef UNDER_CE
     char* __old = std::setlocale(LC_NUMERIC, 0);
     char* __sav = 0;
     if (__builtin_strcmp(__old, "C"))
@@ -66,6 +67,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	__builtin_memcpy(__sav, __old, __len);
 	std::setlocale(LC_NUMERIC, "C");
       }
+#endif
 
     __builtin_va_list __args;
     __builtin_va_start(__args, __fmt);
@@ -78,11 +80,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
     __builtin_va_end(__args);
 
+#ifndef UNDER_CE
     if (__sav)
       {
 	std::setlocale(LC_NUMERIC, __sav);
 	delete [] __sav;
       }
+#endif
     return __ret;
   }
 
