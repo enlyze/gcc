@@ -22,7 +22,9 @@
    see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
+#ifndef UNDER_CE
 	.cfi_sections .debug_frame
+#endif
 
 #ifdef __ARM_EABI__
 /* Some attributes that are common to all routines in this file.  */
