@@ -66,9 +66,11 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 
 #define __GTHREADS 1
 
+#ifndef UNDER_CE
 #include <errno.h>
 #ifdef __MINGW32__
 #include <_mingw.h>
+#endif
 #endif
 
 #ifndef __UNUSED_PARAM
@@ -547,7 +549,9 @@ __gthread_recursive_mutex_destroy (__gthread_recursive_mutex_t *__mutex)
 
 #define NOGDI
 #include <windows.h>
+#ifndef UNDER_CE
 #include <errno.h>
+#endif
 
 static inline int
 __gthread_once (__gthread_once_t *__once, void (*__func) (void))
@@ -555,7 +559,11 @@ __gthread_once (__gthread_once_t *__once, void (*__func) (void))
   if (! __gthread_active_p ())
     return -1;
   else if (__once == NULL || __func == NULL)
+#ifdef UNDER_CE
+    return -1;
+#else
     return EINVAL;
+#endif
 
   if (! __once->done)
     {
