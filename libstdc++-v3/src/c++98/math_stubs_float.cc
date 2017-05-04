@@ -24,6 +24,14 @@
 
 #include <cmath>
 
+#ifdef UNDER_CE
+#define _GLIBCXX_HAVE_COSHF
+#define _GLIBCXX_HAVE_SINHF
+#define _GLIBCXX_HAVE_TANHF
+#define _GLIBCXX_HAVE_EXPF
+#define _GLIBCXX_HAVE_LDEXPF
+#endif
+
 // For targets which do not have support for float versions,
 // we use the following crude approximations. We keep saying that we'll do
 // better later, but never do.
