@@ -28,7 +28,9 @@
 
 #include <bits/basic_file.h>
 #include <fcntl.h>
+#ifndef UNDER_CE
 #include <errno.h>
+#endif
 
 #ifdef _GLIBCXX_HAVE_POLL
 #include <poll.h>
@@ -64,6 +66,10 @@
 #endif
 
 #include <limits> // For <off_t>::max() and min() and <streamsize>::max()
+
+#ifdef UNDER_CE
+#include <windows.h>
+#endif
 
 namespace
 {
@@ -118,8 +124,10 @@ namespace
     for (;;)
       {
 	const std::streamsize __ret = write(__fd, __s, __nleft);
+#ifndef UNDER_CE
 	if (__ret == -1L && errno == EINTR)
 	  continue;
+#endif
 	if (__ret == -1L)
 	  break;
 
@@ -152,8 +160,10 @@ namespace
 	__iov[0].iov_len = __n1_left;
 
 	const std::streamsize __ret = writev(__fd, __iov, 2);
+#ifndef UNDER_CE
 	if (__ret == -1L && errno == EINTR)
 	  continue;
+#endif
 	if (__ret == -1L)
 	  break;
 
@@ -195,6 +205,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     __basic_file* __ret = NULL;
     if (!this->is_open() && __file)
       {
+#ifdef UNDER_CE
+	int __err = fflush(__file);
+#else
 	int __err, __save_errno = errno;
 	// POSIX guarantees that fflush sets errno on error, but C doesn't.
 	errno = 0;
@@ -202,6 +215,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	  __err = fflush(__file);
 	while (__err && errno == EINTR);
 	errno = __save_errno;
+#endif
 	if (!__err)
 	  {
 	    _M_cfile = __file;
@@ -281,9 +295,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   __basic_file<char>::xsgetn(char* __s, streamsize __n)
   {
     streamsize __ret;
+#ifndef UNDER_CE
     do
+#endif
       __ret = read(this->fd(), __s, __n);
+#ifndef UNDER_CE
     while (__ret == -1L && errno == EINTR);
+#endif
     return __ret;
   }
 
