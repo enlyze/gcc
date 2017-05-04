@@ -805,10 +805,12 @@ ARM_FUNC_ALIAS eqsf2 cmpsf2
 	mov	ip, #1			@ how should we specify unordered here?
 
 1:	str	ip, [sp, #-4]!
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 4  @ CFA is now sp + previousOffset + 4.
 	@ We're not adding CFI for ip as it's pushed into the stack only because
 	@ it may be popped off later as a return value (i.e. we're not preserving
 	@ it anyways).
+#endif
 
 	@ Trap any INF/NAN first.
 	mov	r2, r0, lsl #1
@@ -817,17 +819,21 @@ ARM_FUNC_ALIAS eqsf2 cmpsf2
 	do_it	ne
 	COND(mvn,s,ne)	ip, r3, asr #24
 	beq	3f
+#ifndef UNDER_CE
 	.cfi_remember_state
 	@ Save the current CFI state. This is done because the branch is conditional,
 	@ and if we don't take it we'll issue a .cfi_adjust_cfa_offset and return.
 	@ If we do take it, however, the .cfi_adjust_cfa_offset from the non-branch
 	@ code will affect the branch code as well. To avoid this we'll restore
 	@ the current state before executing the branch code.
+#endif
 
 	@ Compare values.
 	@ Note that 0.0 is equal to -0.0.
 2:	add	sp, sp, #4
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset -4       @ CFA is now sp + previousOffset.
+#endif
 
 	orrs	ip, r2, r3, lsr #1	@ test if both are 0, clear C flag
 	do_it	ne
@@ -848,7 +854,9 @@ ARM_FUNC_ALIAS eqsf2 cmpsf2
 
 	@ Restore the previous CFI state (i.e. keep the CFI state as it was
 	@ before the branch).
+#ifndef UNDER_CE
 	.cfi_restore_state
+#endif
 
 	mvns	ip, r2, asr #24
 	bne	4f
@@ -860,7 +868,9 @@ ARM_FUNC_ALIAS eqsf2 cmpsf2
 	beq	2b			@ r1 is not NAN
 
 5:	ldr	r0, [sp], #4		@ return unordered code.
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset -4       @ CFA is now sp + previousOffset.
+#endif
 	RET
 
 	CFI_END_FUNCTION
@@ -886,12 +896,14 @@ ARM_FUNC_ALIAS aeabi_cfcmple aeabi_cfcmpeq
 	@ The status-returning routines are required to preserve all
 	@ registers except ip, lr, and cpsr.
 6:	do_push	{r0, r1, r2, r3, lr}
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 20  @ CFA is at sp + previousOffset + 20
 	.cfi_rel_offset r0, 0      @ Registers are saved from sp to sp + 16
 	.cfi_rel_offset r1, 4
 	.cfi_rel_offset r2, 8
 	.cfi_rel_offset r3, 12
 	.cfi_rel_offset lr, 16
+#endif
 
 	ARM_CALL cmpsf2
 	@ Set the Z flag correctly, and the C flag unconditionally.
@@ -911,8 +923,10 @@ ARM_FUNC_START	aeabi_fcmpeq
 	CFI_START_FUNCTION
 
 	str	lr, [sp, #-8]!    @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cfcmple
 	do_it	eq, e
@@ -927,8 +941,10 @@ ARM_FUNC_START	aeabi_fcmplt
 	CFI_START_FUNCTION
 
 	str	lr, [sp, #-8]!    @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cfcmple
 	do_it	cc, e
@@ -943,8 +959,10 @@ ARM_FUNC_START	aeabi_fcmple
 	CFI_START_FUNCTION
 
 	str	lr, [sp, #-8]!    @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cfcmple
 	do_it	ls, e
@@ -959,8 +977,10 @@ ARM_FUNC_START	aeabi_fcmpge
 	CFI_START_FUNCTION
 
 	str	lr, [sp, #-8]!    @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cfrcmple
 	do_it	ls, e
@@ -975,8 +995,10 @@ ARM_FUNC_START	aeabi_fcmpgt
 	CFI_START_FUNCTION
 
 	str	lr, [sp, #-8]!    @ sp -= 8
+#ifndef UNDER_CE
 	.cfi_adjust_cfa_offset 8  @ CFA is now sp + previousOffset + 8
 	.cfi_rel_offset lr, 0     @ lr is at sp
+#endif
 
 	ARM_CALL aeabi_cfrcmple
 	do_it	cc, e
