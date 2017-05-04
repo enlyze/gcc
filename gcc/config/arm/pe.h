@@ -72,6 +72,9 @@
 /* Switch into a generic section.  */
 #undef  TARGET_ASM_NAMED_SECTION
 #define TARGET_ASM_NAMED_SECTION  default_pe_asm_named_section
+
+/* Select attributes for named sections.  */
+#define TARGET_SECTION_TYPE_FLAGS  arm_pe_section_type_flags
 
 #define TARGET_ASM_FILE_START_FILE_DIRECTIVE true
 
