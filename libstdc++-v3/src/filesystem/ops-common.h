@@ -180,11 +180,13 @@ namespace __gnu_posix
       return (obj & bits) != Bitmask::none;
     }
 
+#ifndef UNDER_CE
   inline bool
   is_not_found_errno(int err) noexcept
   {
     return err == ENOENT || err == ENOTDIR;
   }
+#endif /* !UNDER_CE */
 
 #ifdef _GLIBCXX_HAVE_SYS_STAT_H
   using __gnu_posix::stat_type;
@@ -319,12 +321,17 @@ _GLIBCXX_BEGIN_NAMESPACE_FILESYSTEM
       {
 	if (posix::stat(to, &st1))
 	  {
+#ifdef UNDER_CE
+            ec.assign(-1, std::generic_category());
+            return false;
+#else
 	    const int err = errno;
 	    if (!fs::is_not_found_errno(err))
 	      {
 		ec.assign(err, std::generic_category());
 		return false;
 	      }
+#endif /* !UNDER_CE */
 	  }
 	else
 	  to_st = &st1;
@@ -341,7 +348,11 @@ _GLIBCXX_BEGIN_NAMESPACE_FILESYSTEM
       {
 	if (posix::stat(from, &st2))
 	  {
+#ifdef UNDER_CE
+	    ec.assign(-1, std::generic_category());
+#else
 	    ec.assign(errno, std::generic_category());
+#endif /* !UNDER_CE */
 	    return false;
 	  }
 	else

@@ -26,7 +26,9 @@
 #define _GLIBCXX_DIR_COMMON_H 1
 
 #include <string.h>  // strcmp
+#ifndef UNDER_CE
 #include <errno.h>
+#endif /* !UNDER_CE */
 #if _GLIBCXX_FILESYSTEM_IS_WINDOWS
 #include <wchar.h>  // wcscmp
 #endif
@@ -85,10 +87,14 @@ struct _Dir_base
       ec.clear();
     else
     {
+#ifdef UNDER_CE
+      const int err = -1;
+#else
       const int err = errno;
       if (err == EACCES && skip_permission_denied)
 	ec.clear();
       else
+#endif /* !UNDER_CE */
 	ec.assign(err, std::generic_category());
     }
   }
@@ -104,10 +110,16 @@ struct _Dir_base
   {
     ec.clear();
 
+#ifdef UNDER_CE
+    const int err = -1;
+#else
     int err = std::exchange(errno, 0);
+#endif /* !UNDER_CE */
     const posix::dirent* entp = posix::readdir(dirp);
+#ifndef UNDER_CE
     // std::swap cannot be used with Bionic's errno
     err = std::exchange(errno, err);
+#endif /* !UNDER_CE */
 
     if (entp)
       {
@@ -118,8 +130,10 @@ struct _Dir_base
       }
     else if (err)
       {
+#ifndef UNDER_CE
 	if (err == EACCES && skip_permission_denied)
 	  return nullptr;
+#endif /* !UNDER_CE */
 	ec.assign(err, std::generic_category());
 	return nullptr;
       }

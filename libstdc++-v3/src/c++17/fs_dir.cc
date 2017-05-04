@@ -30,7 +30,9 @@
 #include <utility>
 #include <stack>
 #include <string.h>
+#ifndef UNDER_CE
 #include <errno.h>
+#endif /* !UNDER_CE */
 #define _GLIBCXX_BEGIN_NAMESPACE_FILESYSTEM namespace filesystem {
 #define _GLIBCXX_END_NAMESPACE_FILESYSTEM }
 #include "../filesystem/dir-common.h"
@@ -209,6 +211,9 @@ recursive_directory_iterator(const path& p, directory_options options,
     }
   else
     {
+#ifdef UNDER_CE
+      const int err = -1;
+#else
       const int err = errno;
       if (err == EACCES
 	  && is_set(options, fs::directory_options::skip_permission_denied))
@@ -217,6 +222,7 @@ recursive_directory_iterator(const path& p, directory_options options,
 	    ecptr->clear();
 	  return;
 	}
+#endif /* !UNDER_CE */
 
       if (!ecptr)
 	_GLIBCXX_THROW_OR_ABORT(filesystem_error(

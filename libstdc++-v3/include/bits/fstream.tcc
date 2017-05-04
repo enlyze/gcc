@@ -38,7 +38,9 @@
 
 #include <bits/cxxabi_forced.h>
 #include <bits/move.h>   // for swap
+#ifndef UNDER_CE
 #include <cerrno>
+#endif /* !UNDER_CE */
 
 namespace std _GLIBCXX_VISIBILITY(default)
 {
@@ -471,8 +473,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    __throw_ios_failure(__N("basic_filebuf::underflow "
 				"invalid byte sequence in file"));
 	  else
+#ifdef UNDER_CE
+	    __throw_ios_failure(__N("basic_filebuf::underflow "
+				"error reading the file"));
+#else
 	    __throw_ios_failure(__N("basic_filebuf::underflow "
 				"error reading the file"), errno);
+#endif /* !UNDER_CE */
 	}
       return __ret;
     }
@@ -717,8 +724,13 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    {
 	      __len = _M_file.xsgetn(reinterpret_cast<char*>(__s), __n);
 	      if (__len == -1)
+#ifdef UNDER_CE
+		__throw_ios_failure(__N("basic_filebuf::xsgetn "
+					"error reading the file"));
+#else
 		__throw_ios_failure(__N("basic_filebuf::xsgetn "
 					"error reading the file"), errno);
+#endif /* !UNDER_CE */
 	      if (__len == 0)
 		break;
  

@@ -26,7 +26,9 @@
 #define _GLIBCXX_THREAD_ABI_COMPAT 1
 #include <thread>
 #include <system_error>
+#ifndef UNDER_CE
 #include <cerrno>
+#endif
 #include <cxxabi_forced.h>
 
 #ifdef _GLIBCXX_HAS_GTHREADS
