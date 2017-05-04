@@ -61,7 +61,14 @@ namespace std
   using ::time_t;
   using ::tm;
 
+#ifdef UNDER_CE
+static inline clock_t clock() {
+	return -1;
+}
+#else
   using ::clock;
+#endif
+
   using ::difftime;
   using ::mktime;
   using ::time;
