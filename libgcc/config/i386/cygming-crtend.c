@@ -56,6 +56,8 @@ static EH_FRAME_SECTION_CONST int __FRAME_END__[]
 extern void __gcc_register_frame (void); 
 extern void __gcc_deregister_frame (void);
 
+#ifndef UNDER_CE
+
 static void register_frame_ctor (void) __attribute__ ((constructor (0)));
 
 static void
@@ -72,4 +74,6 @@ deregister_frame_dtor (void)
 {
   __gcc_deregister_frame ();
 }
+#endif
+
 #endif
