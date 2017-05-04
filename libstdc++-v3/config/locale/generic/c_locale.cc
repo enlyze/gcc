@@ -28,7 +28,9 @@
 
 // Written by Benjamin Kosnik <bkoz@redhat.com>
 
+#ifndef UNDER_CE
 #include <cerrno>  // For errno
+#endif
 #include <cmath>  // For isinf, finite, finitef, fabs
 #include <cstdlib>  // For strof, strtold
 #include <cstring>

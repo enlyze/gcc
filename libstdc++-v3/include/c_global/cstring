@@ -84,7 +84,9 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #endif
   using ::strcpy;
   using ::strcspn;
+#ifndef UNDER_CE
   using ::strerror;
+#endif
   using ::strlen;
   using ::strncat;
   using ::strncmp;

@@ -149,6 +149,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
     virtual string
     message(int) const = 0;
 
+#ifndef UNDER_CE
     virtual error_condition
     default_error_condition(int __i) const noexcept;
 
@@ -157,6 +158,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
     virtual bool
     equivalent(const error_code& __code, int __i) const noexcept;
+#endif
 
     bool
     operator<(const error_category& __other) const noexcept
@@ -177,6 +179,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   error_category::~error_category() noexcept = default;
 
+#ifndef UNDER_CE
   namespace
   {
     using std::string;
@@ -251,6 +254,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       return __code.value() == __i;
     return false;
   }
+#endif
 
 _GLIBCXX_END_NAMESPACE_VERSION
 }
