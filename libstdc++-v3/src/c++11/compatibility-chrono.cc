@@ -22,6 +22,7 @@
 // see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 // <http://www.gnu.org/licenses/>.
 
+#ifndef UNDER_CE
 #include <bits/c++config.h>
 
 #ifdef _GLIBCXX_USE_C99_STDINT_TR1
@@ -90,3 +91,4 @@ _GLIBCXX_END_NAMESPACE_VERSION
 } // namespace std
 
 #endif // _GLIBCXX_USE_C99_STDINT_TR1
+#endif
