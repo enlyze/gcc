@@ -59,7 +59,9 @@ using std::bsearch;
 using std::calloc;
 using std::div;
 using std::free;
+#ifndef UNDER_CE
 using std::getenv;
+#endif
 using std::labs;
 using std::ldiv;
 using std::malloc;
@@ -77,7 +79,9 @@ using std::srand;
 using std::strtod;
 using std::strtol;
 using std::strtoul;
+#ifndef UNDER_CE
 using std::system;
+#endif
 #ifdef _GLIBCXX_USE_WCHAR_T
 #ifndef UNDER_CE
 using std::wcstombs;
