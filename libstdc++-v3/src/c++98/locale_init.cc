@@ -286,9 +286,11 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
       if (__other._M_impl != _S_classic)
 	__other._M_impl->_M_add_reference();
       _S_global = __other._M_impl;
+#ifndef UNDER_CE
       const string __other_name = __other.name();
       if (__other_name != "*")
 	setlocale(LC_ALL, __other_name.c_str());
+#endif
     }
 
     // Reference count sanity check: one reference removed for the
