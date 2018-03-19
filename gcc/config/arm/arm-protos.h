@@ -29,6 +29,8 @@ extern void arm_pe_maybe_record_exported_symbol (tree, const char *, int);
 extern void arm_pe_start_function (FILE *, const char *, tree);
 extern void arm_pe_end_function (FILE *, const char *, tree);
 
+extern void arm_pe_file_end (void);
+
 extern enum unwind_info_type arm_except_unwind_info (struct gcc_options *);
 extern int use_return_insn (int, rtx);
 extern bool use_simple_return_p (void);
@@ -228,6 +230,8 @@ extern void arm_mark_dllexport (tree);
 extern void arm_mark_dllimport (tree);
 extern bool arm_change_mode_p (tree);
 #endif
+
+extern void arm_pe_record_external_function (tree, const char *);
 
 extern tree arm_valid_target_attribute_tree (tree, struct gcc_options *,
 					     struct gcc_options *);
