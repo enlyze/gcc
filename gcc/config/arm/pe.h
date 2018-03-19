@@ -94,6 +94,16 @@
 #define ASM_DECLARE_FUNCTION_SIZE(FILE,NAME,DECL) \
   arm_pe_end_function (FILE, NAME, DECL)
 
+/* Add an external function to the list of functions to be declared at
+   the end of the file.  */
+#define ASM_OUTPUT_EXTERNAL(FILE, DECL, NAME)				\
+  do									\
+    {									\
+      if (TREE_CODE (DECL) == FUNCTION_DECL)				\
+	arm_pe_record_external_function ((DECL), (NAME));		\
+    }									\
+  while (0)
+
 /* Output the label for an initialized variable.  */
 #undef ASM_DECLARE_OBJECT_NAME
 #define ASM_DECLARE_OBJECT_NAME(STREAM, NAME, DECL)	\

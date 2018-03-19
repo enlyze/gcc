@@ -206,9 +206,9 @@ static void arm_elf_asm_destructor (rtx, int) ATTRIBUTE_UNUSED;
 #endif
 #ifndef ARM_PE
 static void arm_encode_section_info (tree, rtx, int);
-#endif
 
 static void arm_file_end (void);
+#endif
 static void arm_file_start (void);
 static void arm_insert_attributes (tree, tree *);
 
@@ -399,7 +399,11 @@ static const struct attribute_spec arm_attribute_table[] =
 #undef TARGET_ASM_FILE_START
 #define TARGET_ASM_FILE_START arm_file_start
 #undef TARGET_ASM_FILE_END
+#ifdef ARM_PE
+#define TARGET_ASM_FILE_END arm_pe_file_end
+#else
 #define TARGET_ASM_FILE_END arm_file_end
+#endif
 
 #undef  TARGET_ASM_ALIGNED_SI_OP
 #define TARGET_ASM_ALIGNED_SI_OP NULL
@@ -26549,6 +26553,8 @@ arm_file_start (void)
   default_file_start ();
 }
 
+#ifndef ARM_PE
+
 static void
 arm_file_end (void)
 {
@@ -26578,7 +26584,6 @@ arm_file_end (void)
     }
 }
 
-#ifndef ARM_PE
 /* Symbols in the text segment can be accessed without indirecting via the
    constant pool; it may take an extra binary operation, but this is still
    faster than indirecting via memory.  Don't do this when not optimizing,
