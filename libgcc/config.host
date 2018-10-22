@@ -442,7 +442,14 @@ arm*-*-eabi* | arm*-*-symbianelf* | arm*-*-rtems*)
 arm*-*-mingw32ce* | arm*-*-cegcc*)
 	extra_parts="crtbegin.o crtend.o"
 	tmake_file="$tmake_file arm/t-wince-pe"
-	tmake_file="$tmake_file i386/t-gthr-win32"
+	case ${target_thread_file} in
+	  win32)
+	    tmake_file="$tmake_file i386/t-gthr-win32"
+	    ;;
+	  posix)
+	    tmake_file="i386/t-mingw-pthread $tmake_file"
+	    ;;
+	esac
 	;;
 avr-*-*)
 	# Make HImode functions for AVR
