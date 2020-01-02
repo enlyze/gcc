@@ -1,3 +1,4 @@
+#ifndef UNDER_CE
 // Class filesystem::directory_entry etc. -*- C++ -*-
 
 // Copyright (C) 2014-2019 Free Software Foundation, Inc.
@@ -359,3 +360,4 @@ fs::recursive_directory_iterator::disable_recursion_pending() noexcept
 {
   _M_dirs->pending = false;
 }
+#endif /* !UNDER_CE */

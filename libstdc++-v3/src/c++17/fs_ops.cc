@@ -1,3 +1,4 @@
+#ifndef UNDER_CE
 // Filesystem operations -*- C++ -*-
 
 // Copyright (C) 2014-2019 Free Software Foundation, Inc.
@@ -1633,3 +1634,4 @@ fs::weakly_canonical(const path& p, error_code& ec)
     }
   return result;
 }
+#endif /* !UNDER_CE */
