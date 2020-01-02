@@ -1,3 +1,4 @@
+#ifndef UNDER_CE
 // Class filesystem::path -*- C++ -*-
 
 // Copyright (C) 2014-2019 Free Software Foundation, Inc.
@@ -2006,3 +2007,4 @@ fs::filesystem_error::path2() const noexcept
 const char*
 fs::filesystem_error::what() const noexcept
 { return _M_impl->what.c_str(); }
+#endif /* !UNDER_CE */
