@@ -73,6 +73,7 @@ namespace __gnu_posix
 
   typedef struct ::_stat stat_type;
 
+#ifndef UNDER_CE
   inline int stat(const wchar_t* path, stat_type* buffer)
   { return ::_wstat(path, buffer); }
 
@@ -102,10 +103,12 @@ namespace __gnu_posix
   inline int utime(const wchar_t* path, utimbuf* times)
   { return ::_wutime(path, times); }
 #endif
+#endif /* !UNDER_CE */
 
   inline int rename(const wchar_t* oldname, const wchar_t* newname)
   { return _wrename(oldname, newname); }
 
+#ifndef UNDER_CE
   inline int truncate(const wchar_t* path, _off64_t length)
   {
     const int fd = ::_wopen(path, _O_BINARY|_O_RDWR);
@@ -118,6 +121,7 @@ namespace __gnu_posix
     ::_set_errno(err);
     return ret;
   }
+#endif /* !UNDER_CE */
   using char_type = wchar_t;
 #elif defined _GLIBCXX_HAVE_UNISTD_H
   using ::open;
