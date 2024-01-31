@@ -63,8 +63,10 @@ __float128 cosq(__float128 x)
 	else if (ix>=0x7fff000000000000LL) {
 	    if (ix == 0x7fff000000000000LL) {
 		GET_FLT128_LSW64(n,x);
+#ifndef UNDER_CE
 		if (n == 0)
 		    errno = EDOM;
+#endif
 	    }
 	    return x-x;
 	}

@@ -26,8 +26,10 @@ fdimq (__float128 x, __float128 y)
     return 0;
 
   __float128 r = math_narrow_eval (x - y);
+#ifndef UNDER_CE
   if (isinfq (r) && !isinfq (x) && !isinfq (y))
     errno = ERANGE;
+#endif
 
   return r;
 }

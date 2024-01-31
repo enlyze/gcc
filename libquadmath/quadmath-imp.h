@@ -21,7 +21,9 @@ Boston, MA 02110-1301, USA.  */
 #ifndef QUADMATH_IMP_H
 #define QUADMATH_IMP_H
 
+#ifndef UNDER_CE
 #include <errno.h>
+#endif
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>

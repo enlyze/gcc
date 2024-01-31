@@ -42,7 +42,13 @@ int ilogbq (__float128 x)
 	hx &= 0x7fffffffffffffffLL;
 	if(hx <= 0x0001000000000000LL) {
 	    if((hx|lx)==0)
-		{ errno = EDOM; feraiseexcept (FE_INVALID); return FP_ILOGB0; }	/* ilogbl(0) = FP_ILOGB0 */
+		{
+#ifndef UNDER_CE
+			errno = EDOM;
+#endif
+			feraiseexcept (FE_INVALID);
+			return FP_ILOGB0;
+		}	/* ilogbl(0) = FP_ILOGB0 */
 	    else			/* subnormal x */
 		if(hx==0) {
 		    for (ix = -16431; lx>0; lx<<=1) ix -=1;
@@ -55,7 +61,19 @@ int ilogbq (__float128 x)
 	else if (FP_ILOGBNAN != INT_MAX) {
 	    /* ISO C99 requires ilogbl(+-Inf) == INT_MAX.  */
 	    if (((hx^0x7fff000000000000LL)|lx) == 0)
-		{ errno = EDOM; feraiseexcept (FE_INVALID); return INT_MAX; }
+		{
+#ifndef UNDER_CE
+			errno = EDOM;
+#endif
+			feraiseexcept (FE_INVALID);
+			return INT_MAX;
+		}
 	}
-	{ errno = EDOM; feraiseexcept (FE_INVALID); return FP_ILOGBNAN; }
+	{
+#ifndef UNDER_CE
+		errno = EDOM;
+#endif
+		feraiseexcept (FE_INVALID);
+		return FP_ILOGBNAN;
+	}
 }

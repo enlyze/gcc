@@ -69,12 +69,16 @@ __float128 nextafterq(__float128 x, __float128 y)
 	if(hy==0x7fff000000000000LL) {
 	    __float128 u = x + x;		/* overflow  */
 	    math_force_eval (u);
+#ifndef UNDER_CE
 	    errno = ERANGE;
+#endif
 	}
 	if(hy==0) {
 	    __float128 u = x*x;		/* underflow */
 	    math_force_eval (u);		/* raise underflow flag */
+#ifndef UNDER_CE
 	    errno = ERANGE;
+#endif
 	}
 	SET_FLT128_WORDS64(x,hx,lx);
 	return x;

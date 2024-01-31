@@ -21,7 +21,9 @@ ldexpq (__float128 value, int exp)
 {
 	if(!finiteq(value)||value==0) return value + value;
 	value = scalbnq(value,exp);
+#ifndef UNDER_CE
 	if(!finiteq(value)||value==0) errno = ERANGE;
+#endif
 	return value;
 }
 

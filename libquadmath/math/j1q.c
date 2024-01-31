@@ -698,8 +698,10 @@ j1q (__float128 x)
     {
       __float128 ret = x * 0.5Q;
       math_check_force_underflow (ret);
+#ifndef UNDER_CE
       if (ret == 0)
 	errno = ERANGE;
+#endif
       return ret;
     }
   if (xx <= 2)
@@ -855,8 +857,10 @@ y1q (__float128 x)
   if (xx <= 0x1p-114)
     {
       z = -TWOOPI / x;
+#ifndef UNDER_CE
       if (isinfq (z))
 	errno = ERANGE;
+#endif
       return z;
     }
   if (xx <= 2)

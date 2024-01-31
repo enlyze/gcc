@@ -923,8 +923,10 @@ erfcq (__float128 x)
       if ((sign & 0x80000000) == 0)
 	{
 	  __float128 ret = r / x;
+#ifndef UNDER_CE
 	  if (ret == 0)
 	    errno = ERANGE;
+#endif
 	  return ret;
 	}
       else
@@ -934,7 +936,9 @@ erfcq (__float128 x)
     {
       if ((sign & 0x80000000) == 0)
 	{
+#ifndef UNDER_CE
 	  errno = ERANGE;
+#endif
 	  return tiny * tiny;
 	}
       else

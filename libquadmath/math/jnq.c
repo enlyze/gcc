@@ -295,7 +295,9 @@ jnq (int n, __float128 x)
   if (ret == 0)
     {
       ret = copysignq (FLT128_MIN, ret) * FLT128_MIN;
+#ifndef UNDER_CE
       errno = ERANGE;
+#endif
     }
   else
     math_check_force_underflow (ret);
@@ -400,9 +402,11 @@ ynq (int n, __float128 x)
 	    a = temp;
 	  }
       }
+#ifndef UNDER_CE
     /* If B is +-Inf, set up errno accordingly.  */
     if (! finiteq (b))
       errno = ERANGE;
+#endif
     if (sign > 0)
       ret = b;
     else

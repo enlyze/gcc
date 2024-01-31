@@ -36,8 +36,10 @@ sincosq (__float128 x, __float128 *sinx, __float128 *cosx)
     {
       /* sin(Inf or NaN) is NaN */
       *sinx = *cosx = x - x;
+#ifndef UNDER_CE
       if (isinfq (x))
 	errno = EDOM;
+#endif
     }
   else
     {
