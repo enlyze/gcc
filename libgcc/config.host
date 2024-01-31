@@ -331,6 +331,9 @@ case ${host} in
   *-*-solaris2*)
   enable_execute_stack=enable-execute-stack-mprotect.c
   ;;
+i386-*-mingw32ce)
+  enable_execute_stack=enable-execute-stack-empty.c;
+  ;;
 i[34567]86-*-mingw* | x86_64-*-mingw*)
   enable_execute_stack=config/i386/enable-execute-stack-mingw32.c
   ;;
