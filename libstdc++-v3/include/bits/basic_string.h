@@ -6643,39 +6643,38 @@ _GLIBCXX_BEGIN_NAMESPACE_CXX11
   stold(const wstring& __str, size_t* __idx = 0)
   { return __gnu_cxx::__stoa(&std::wcstold, "stold", __str.c_str(), __idx); }
 
-#ifndef _GLIBCXX_HAVE_BROKEN_VSWPRINTF
   // DR 1261.
   inline wstring
   to_wstring(int __val)
-  { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, 4 * sizeof(int),
+  { return __gnu_cxx::__to_xstring<wstring>(&_vsnwprintf, 4 * sizeof(int),
 					    L"%d", __val); }
 
   inline wstring
   to_wstring(unsigned __val)
-  { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf,
+  { return __gnu_cxx::__to_xstring<wstring>(&_vsnwprintf,
 					    4 * sizeof(unsigned),
 					    L"%u", __val); }
 
   inline wstring
   to_wstring(long __val)
-  { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, 4 * sizeof(long),
+  { return __gnu_cxx::__to_xstring<wstring>(&_vsnwprintf, 4 * sizeof(long),
 					    L"%ld", __val); }
 
   inline wstring
   to_wstring(unsigned long __val)
-  { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf,
+  { return __gnu_cxx::__to_xstring<wstring>(&_vsnwprintf,
 					    4 * sizeof(unsigned long),
 					    L"%lu", __val); }
 
   inline wstring
   to_wstring(long long __val)
-  { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf,
+  { return __gnu_cxx::__to_xstring<wstring>(&_vsnwprintf,
 					    4 * sizeof(long long),
 					    L"%lld", __val); }
 
   inline wstring
   to_wstring(unsigned long long __val)
-  { return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf,
+  { return __gnu_cxx::__to_xstring<wstring>(&_vsnwprintf,
 					    4 * sizeof(unsigned long long),
 					    L"%llu", __val); }
 
@@ -6684,7 +6683,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CXX11
   {
     const int __n =
       __gnu_cxx::__numeric_traits<float>::__max_exponent10 + 20;
-    return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, __n,
+    return __gnu_cxx::__to_xstring<wstring>(&_vsnwprintf, __n,
 					    L"%f", __val);
   }
 
@@ -6693,7 +6692,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CXX11
   {
     const int __n =
       __gnu_cxx::__numeric_traits<double>::__max_exponent10 + 20;
-    return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, __n,
+    return __gnu_cxx::__to_xstring<wstring>(&_vsnwprintf, __n,
 					    L"%f", __val);
   }
 
@@ -6702,10 +6701,9 @@ _GLIBCXX_BEGIN_NAMESPACE_CXX11
   {
     const int __n =
       __gnu_cxx::__numeric_traits<long double>::__max_exponent10 + 20;
-    return __gnu_cxx::__to_xstring<wstring>(&std::vswprintf, __n,
+    return __gnu_cxx::__to_xstring<wstring>(&_vsnwprintf, __n,
 					    L"%Lf", __val);
   }
-#endif // _GLIBCXX_HAVE_BROKEN_VSWPRINTF
 #endif // _GLIBCXX_USE_WCHAR_T && _GLIBCXX_USE_C99_WCHAR
 
 _GLIBCXX_END_NAMESPACE_CXX11
